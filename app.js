@@ -21,6 +21,7 @@ noble.on('discover', function(peripheral) {
 
   console.log()
 
+  //output.txtにjson(Peripheral)書き込み
   consoleDataOutput.write(peripheral + '\n');
 
 });
