@@ -25,9 +25,6 @@ noble.on('stateChange', function(state) {
 
 noble.on('discover', function(peripheral) {
 
-  //console.log('Address', peripheral._noble.address);
-  //console.dir(peripheral, {depth: null, colors: true});
-  //console.log()
   var scanData = {
     time    :time(),
     name    :peripheral.advertisement.localName,
@@ -36,17 +33,12 @@ noble.on('discover', function(peripheral) {
     txPower :peripheral.advertisement.txPowerLevel,
     rssi    :peripheral.rssi,
   }
+  var scanDataToTxt = JSON.stringify(scanData);
 
   setInterval(function(){
-    //console.log(time()+ ","+ peripheral.address + "," + peripheral.uuid + "," + peripheral.rssi);
     console.dir(scanData, {depth: null, colors: true});
-    //if(peripheral.address == "04:4b:ed:99:8f:8d") console.log("!!!!!!!!!!!!!!!!!");
-    //console.log();
-    //console.log('Address', peripheral._noble.address);
-    //peripheral.updateRssi();
+    //output.txtにjson(Peripheral)書き込み
+    consoleDataOutput.write(scanDataToTxt + '\n');
   }, 1000);
-
-  //output.txtにjson(Peripheral)書き込み
-  consoleDataOutput.write(peripheral + '\n');
 
 });
