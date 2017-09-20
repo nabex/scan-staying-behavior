@@ -28,11 +28,12 @@ noble.on('discover', function(peripheral) {
   //console.log()
 
   setInterval(function(){
-    console.log(time());
+    console.log(time()+ ","+ peripheral.address + "," + peripheral.uuid + "," + peripheral.rssi);
+    //if(peripheral.address == "04:4b:ed:99:8f:8d") console.log("!!!!!!!!!!!!!!!!!");
     //console.log();
     //console.log('Address', peripheral._noble.address);
     //peripheral.updateRssi();
-  }, 1000);
+  }, 10000);
 
   //output.txtにjson(Peripheral)書き込み
   consoleDataOutput.write(peripheral + '\n');
