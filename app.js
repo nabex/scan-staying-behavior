@@ -2,6 +2,8 @@ var noble = require('noble');
 var fs = require('fs');
 var consoleDataOutput = fs.createWriteStream('./output.txt');
 
+
+
 //現在時刻取得
 function time() {
 	var now = new Date();
@@ -9,7 +11,7 @@ function time() {
 	var min = now.getMinutes();
 	var sec = now.getSeconds();
 	//出力用
-	var s = hour + "," + min + "," + sec;
+	var s = hour + ":" + min + ":" + sec;
 	return s;
 }
 
@@ -26,14 +28,24 @@ noble.on('discover', function(peripheral) {
   //console.log('Address', peripheral._noble.address);
   //console.dir(peripheral, {depth: null, colors: true});
   //console.log()
+  var scanData = {
+    time    :time(),
+    name    :peripheral.advertisement.localName,
+    bd_addr :peripheral.address,
+    uuid    :peripheral.uuid,
+    txPower :peripheral.advertisement.txPowerLevel,
+    rssi    :peripheral.rssi,
+  }
+  //var showScanRawData = JSON.stringify(scanRawData);
 
   setInterval(function(){
-    console.log(time()+ ","+ peripheral.address + "," + peripheral.uuid + "," + peripheral.rssi);
+    //console.log(time()+ ","+ peripheral.address + "," + peripheral.uuid + "," + peripheral.rssi);
+    console.log(scanData);
     //if(peripheral.address == "04:4b:ed:99:8f:8d") console.log("!!!!!!!!!!!!!!!!!");
     //console.log();
     //console.log('Address', peripheral._noble.address);
     //peripheral.updateRssi();
-  }, 10000);
+  }, 1000);
 
   //output.txtにjson(Peripheral)書き込み
   consoleDataOutput.write(peripheral + '\n');
