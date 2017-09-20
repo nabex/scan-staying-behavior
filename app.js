@@ -36,11 +36,10 @@ noble.on('discover', function(peripheral) {
     txPower :peripheral.advertisement.txPowerLevel,
     rssi    :peripheral.rssi,
   }
-  //var showScanRawData = JSON.stringify(scanRawData);
 
   setInterval(function(){
     //console.log(time()+ ","+ peripheral.address + "," + peripheral.uuid + "," + peripheral.rssi);
-    console.log(scanData);
+    console.dir(scanData, {depth: null, colors: true});
     //if(peripheral.address == "04:4b:ed:99:8f:8d") console.log("!!!!!!!!!!!!!!!!!");
     //console.log();
     //console.log('Address', peripheral._noble.address);
