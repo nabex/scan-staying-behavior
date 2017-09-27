@@ -1,7 +1,65 @@
+'use strict';
+
+const noble = require('noble');
+const knownDevices = [];
+
+
+//現在時刻取得
+function time() {
+	var now = new Date();
+	var hour = now.getHours();
+	var min = now.getMinutes();
+	var sec = now.getSeconds();
+	//出力用
+	var s = hour + "," + min + "," + sec;
+	return s;
+}
+
+
+
+//discovered BLE device
+const discovered = (peripheral) => {
+    const device = {
+        name		: peripheral.advertisement.localName,
+				addr 		:	peripheral.address,
+        uuid		: peripheral.uuid,
+        rssi		: peripheral.rssi
+    };
+    knownDevices.push(device);
+    console.log(`${knownDevices.length},NAME:${device.name},ADDR:${device.addr},UUID:${device.uuid},RSSI:${device.rssi}`);
+}
+
+
+
+//BLE scan start
+const scanStart = () => {
+    noble.startScanning();
+    noble.on('discover', discovered);
+}
+
+if(noble.state === 'poweredOn'){
+    scanStart();
+}else{
+    noble.on('stateChange', scanStart);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 var noble = require('noble');
 var fs = require('fs');
-var consoleDataOutput = fs.createWriteStream('./output.txt');
+var consoleDataOutput = fs.createWriteStream('./output..json');
 
+var targetUUID = "91af1f253cfb4d5bb89aac568935c516"; //NabePhoneUUID
 
 
 //現在時刻取得
@@ -14,15 +72,46 @@ function time() {
 	var s = hour + ":" + min + ":" + sec;
 	return s;
 }
+*/
 
 
+
+
+/*
 noble.on('stateChange', function(state) {
-  if (state === 'poweredOn') noble.startScanning();
-  else noble.stopScanning();
+
+	setInterval(function(){
+		if (state === 'poweredOn'){
+			noble.startScanning();
+			console.log("");
+		}else{
+			noble.stopScanning();
+		}
+	}, 10000);
 });
 
 
+noble.on('discover', function(peripheral){
+	var scanData = {
+		time	:time(),
+		name    :peripheral.advertisement.localName,
+    bd_addr :peripheral.address,
+    uuid    :peripheral.uuid,
+    txPower :peripheral.advertisement.txPowerLevel,
+    rssi    :peripheral.rssi,
+	}
+	var scanDataToTxt = JSON.stringify(scanData);
 
+	console.log(scanData.name+","+scanData.uuid+","+);
+	consoleDataOutput.write(scanDataToTxt + '\n');
+
+
+});//noble.on('discover');
+
+*/
+
+
+/*
 noble.on('discover', function(peripheral) {
 
   var scanData = {
@@ -35,10 +124,15 @@ noble.on('discover', function(peripheral) {
   }
   var scanDataToTxt = JSON.stringify(scanData);
 
+  console.dir(scanData, {depth: null, colors: true});
+
   setInterval(function(){
-    console.dir(scanData, {depth: null, colors: true});
+    peripheral.updateRssi();
     //output.txtにjson(Peripheral)書き込み
-    consoleDataOutput.write(scanDataToTxt + '\n');
+    if(scanData.name == 'NabePhone'){
+      consoleDataOutput.write(scanDataToTxt + '\n');
+    }
   }, 1000);
 
 });
+*/
