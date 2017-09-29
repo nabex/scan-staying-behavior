@@ -1,3 +1,4 @@
+/*
 'use strict';
 
 const noble = require('noble');
@@ -33,9 +34,15 @@ const discovered = (peripheral) => {
 
 //BLE scan start
 const scanStart = () => {
+	setInterval(function(){
     noble.startScanning();
     noble.on('discover', discovered);
+		console.log("");
+	},3000);
 }
+
+
+
 
 if(noble.state === 'poweredOn'){
     scanStart();
@@ -44,6 +51,7 @@ if(noble.state === 'poweredOn'){
 }
 
 
+*/
 
 
 
@@ -54,10 +62,10 @@ if(noble.state === 'poweredOn'){
 
 
 
-/*
 var noble = require('noble');
 var fs = require('fs');
-var consoleDataOutput = fs.createWriteStream('./output..json');
+var consoleDataOutput = fs.createWriteStream('./output.json');
+var knownDevices = [];
 
 var targetUUID = "91af1f253cfb4d5bb89aac568935c516"; //NabePhoneUUID
 
@@ -72,12 +80,9 @@ function time() {
 	var s = hour + ":" + min + ":" + sec;
 	return s;
 }
-*/
 
 
 
-
-/*
 noble.on('stateChange', function(state) {
 
 	setInterval(function(){
@@ -92,7 +97,8 @@ noble.on('stateChange', function(state) {
 
 
 noble.on('discover', function(peripheral){
-	var scanData = {
+
+	var device = {
 		time	:time(),
 		name    :peripheral.advertisement.localName,
     bd_addr :peripheral.address,
@@ -100,15 +106,16 @@ noble.on('discover', function(peripheral){
     txPower :peripheral.advertisement.txPowerLevel,
     rssi    :peripheral.rssi,
 	}
-	var scanDataToTxt = JSON.stringify(scanData);
+	knownDevices.push(device);
+	var scanDataToTxt = JSON.stringify(device);
 
-	console.log(scanData.name+","+scanData.uuid+","+);
+	console.log(`${knownDevices.length},NAME:${device.name},ADDR:${device.addr},UUID:${device.uuid},RSSI:${device.rssi}`);
+	//console.log(scanData.name+","+scanData.uuid+","+);
 	consoleDataOutput.write(scanDataToTxt + '\n');
 
 
 });//noble.on('discover');
 
-*/
 
 
 /*
